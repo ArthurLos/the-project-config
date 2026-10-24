@@ -1,0 +1,10 @@
+# See ../../todo-backend/manifests/kustomization.yaml for why this exists.
+# ingress.yaml is excluded - obsolete locally, replaced by the Gateway API
+# HTTPRoute in ../../overlays/production/gateway.yaml. pvc.yaml is the exercise
+# 4.9 dynamically-provisioned claim,
+# not the project namespace's manually pinned PersistentVolume.
+resources:
+  - configmap.yaml
+  - pvc.yaml
+  - deployment.yaml
+  - service.yaml

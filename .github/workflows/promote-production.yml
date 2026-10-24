@@ -1,0 +1,33 @@
+name: Promote to production
+
+# Exercise 4.9 (moved here as part of exercise 4.10's code/config split - see
+# README.md): "each tagged commit results in deployment to the production
+# environment". Pushing a v* tag to THIS repo (e.g. v1.0.0) is what "cuts a
+# release" of the configuration: this workflow fast-forwards the production
+# branch to that exact commit. argocd-application-production.yaml's
+# Application tracks that branch and picks up the move on its own - same
+# automated-sync mechanism as every other Application here.
+#
+# Deliberately scoped to this config repo's own tags, not the application-code
+# repo's course-exercise tags (https://github.com/ArthurLos/devops-with-kubernetes-2026)
+# - whoever changes the configuration controls what goes to production,
+# independent of unrelated code-repo history.
+#
+# No cloud credentials needed at all - this is a plain git operation against
+# GitHub itself.
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Fast-forward production to this tag
+        run: git push origin "${{ github.sha }}:refs/heads/production" --force

@@ -1,0 +1,9 @@
+# Lets the staging/production overlays (../../overlays/) pull in this service's
+# local (non-GKE) manifests as one unit, without needing their own copy of each
+# file. postgres-secret.yaml is deliberately excluded — per exercise 4.9, secrets
+# are applied outside ArgoCD (see this repo's README for how postgres-credentials
+# gets into each namespace instead).
+resources:
+  - postgres.yaml
+  - deployment.yaml
+  - service.yaml
